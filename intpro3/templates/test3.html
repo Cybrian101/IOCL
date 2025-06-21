@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOGIN</title>
+    <link rel="stylesheet" type="text/css" href="static/plogin3.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+<body>
+    <div class="top-container">
+        <div class="logo-container">
+            <img src="static/iocl.gif" >
+        </div>
+        <div class="top-button-box">
+            <div id="btn">
+                <button type="button" class="toggle-btn1" onclick="showUserLogin()">User</button>
+                <button type="button" class="toggle-btn1" onclick="showAdminLogin()">Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="main">
+        <div class="log-in">
+            <form id="loginForm" action="/submit_login" method="post">
+                <h1>LOGIN</h1>
+                <input type="text" id="idInput" name="id" placeholder="ID" required="">
+                <input type="password" id="passwordInput" name="password" placeholder="Password" required="">
+                <a href="#">Forgot your Password?</a>
+                <button type="submit">Login</button>
+                <div class="social-container">
+                    <a href="https://iocl.com/" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.google.com" class="social"><i class="fab fa-google-plus-g"></i></a>
+                </div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-left">
+                    <h1>Sign In</h1>
+                    <p>Kindly Login to Experience More Features</p>
+                    <button id="signIn">LOGIN</button>
+                </div>
+                <div class="overlay-right">
+                    <h1>Welcome Back</h1>
+                    <p>Login to Proceed</p>
+                    <button id="signUp">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const main = document.getElementById('main');
+        const loginForm = document.getElementById('loginForm');
+        const idInput = document.getElementById('idInput');
+        const passwordInput = document.getElementById('passwordInput');
+
+        signUpButton.addEventListener('click', () => {
+            main.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            main.classList.remove("right-panel-active");
+        });
+
+        function showUserLogin() {
+            idInput.placeholder = "ID (User1)";
+            passwordInput.placeholder = "Password (iocl2024)";
+            main.classList.remove("right-panel-active"); // Ensure user panel slides from the left
+        }
+
+        function showUserLogin2() {
+            idInput.placeholder = "ID (User2)";
+            passwordInput.placeholder = "Password (iocl2024)";
+            main.classList.remove("right-panel-active"); // Ensure user panel slides from the left
+        }
+
+        function showUserLogin3() {
+            idInput.placeholder = "ID (User3)";
+            passwordInput.placeholder = "Password (iocl2024)";
+            main.classList.remove("right-panel-active"); // Ensure user panel slides from the left
+        }
+
+        function showAdminLogin() {
+            idInput.placeholder = "ID (Admin)";
+            passwordInput.placeholder = "Password (iocl2024)";
+            main.classList.add("right-panel-active"); // Admin panel slides from the right
+        }
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Check if the entered credentials match
+            const enteredId = idInput.value.trim();
+            const enteredPassword = passwordInput.value.trim();
+
+            // Assuming the credentials to match are ID: "User1" or "User2" or "User3" or "Admin" and Password: "iocl2024"
+            const validUser1 = { id: "User1", password: "iocl2024" };
+            const validUser2 = { id: "User2", password: "iocl2024" };
+            const validUser3 = { id: "User3", password: "iocl2024" };
+            const validAdmin = { id: "Admin", password: "iocl2024" };
+
+
+            if (enteredId === validUser1.id && enteredPassword === validUser1.password) {
+                // Redirect to user page 1 upon successful login
+                window.location.href = "login3.html";
+            } else if (enteredId === validUser2.id && enteredPassword === validUser2.password) {
+                // Redirect to user page 2 upon successful login
+                window.location.href = "login3.html";
+            } else if (enteredId === validUser3.id && enteredPassword === validUser3.password) {
+                // Redirect to user page 3 upon successful login
+                window.location.href = "login3.html";
+            } else if (enteredId === validAdmin.id && enteredPassword === validAdmin.password) {
+                // Redirect to admin page upon successful login
+                window.location.href = "submission3.html";
+            } else {
+                // Display error message or handle invalid credentials
+                alert("Invalid credentials. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

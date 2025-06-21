@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%%;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button[type="submit"] {
+            background-color: #28a745;
+        }
+
+        .form-group button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .form-group button.modify {
+            background-color: #007bff;
+        }
+
+        .form-group button.modify:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group button:hover {
+            opacity: 0.8;
+        }
+
+        .form-group button[type="button"] {
+            background-color: #6c757d;
+        }
+
+        .form-group button[type="button"]:hover {
+            background-color: #5a6268;
+        }
+
+        .form-group select {
+            background-color: #f8f9fa;
+        }
+
+        .form-group select:hover {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login Page</h2>
+        
+       
+        <form id="activityForm" action="/submit_form" method="post">
+            <div class="form-group">
+                <label for="user_id">User ID</label>
+                <input for="user_id" id="user_id" name="user_id">
+            <div class="form-group">
+                <label for="serialNumber">S.No</label>
+                <input type="number" id="serialNumber" name="serialNumber" value="{{ max_serial + 1 }}" min="1" readonly>
+            </div>
+            <div class="form-group">
+                <label for="currentDate">Current Date</label>
+                <input type="date" id="currentDate" name="currentDate" value="{{ currentDate }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="downDate">Down Date</label>
+                <input type="date" id="downDate" name="downDate" >
+            </div>
+            <div class="form-group">
+                <label for="downTime">Down Time</label>
+                <input type="time" id="downTime" name="downTime" required>
+            </div>
+            <div class="form-group">
+                <label for="mainCategory">Main Category</label>
+                <select id="mainCategory" name="mainCategory" onchange="populateSubCategories()" required>
+                    <option value="">Select Main Category</option>
+                    <option value="UPS">UPS</option>
+                    <option value="LNK">LNK</option>
+                    <option value="ELT">ELT</option>
+                    <option value="CTV">CTV</option>
+                    <option value="VDA">VDA</option>
+                    <option value="FIR">FIR</option>
+                    <option value="WLD">WLD</option>
+                    <option value="PAC">PAC</option>
+                    <option value="ACS">ACS</option>
+                </select>
+            </div>
+            <div class="form-group" id="subCategoryGroup" style="display: none;">
+                <label for="subCategory">Sub Category</label>
+                <select id="subCategory" name="subCategory">
+                    <!-- Sub-categories will be populated dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ticketId">Ticket ID</label>
+                <input type="text" id="ticketId" name="ticketId" required>
+            </div>
+            <div class="form-group">
+                <label for="remarks">Remarks</label>
+                <textarea id="remarks" name="remarks" rows="5" cols="80"></textarea>
+            </div>
+           
+            <div class="form-group">
+                <button type="submit">Save</button>
+                <button type="button" class="modify" onclick="redirectToModifyPage()">Modify</button>
+                <button type="button" class="signOut" onclick="signOut()">Sign Out</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function redirectToModifyPage() {
+            window.location.href = '/modify3.html'; // Adjust the path as needed
+        }
+            
+        function signOut() {
+            // Redirect to the initial login page (test2.html)
+            window.location.href = "/";
+        }
+
+        document.getElementById('currentDate').valueAsDate = new Date();
+        function populateSubCategories() {
+            var mainCategory = document.getElementById('mainCategory').value;
+            var subCategorySelect = document.getElementById('subCategory');
+            var subCategories = [];
+
+            // Clear previous options
+            subCategorySelect.innerHTML = '';
+
+            // Define sub-categories based on main category
+            switch (mainCategory) {
+                case 'UPS':
+                    subCategories = ['120KVA', '60KVA'];
+                    break;
+                case 'LNK':
+                    subCategories = ['1', '2', '3', '4', '5', '6', '7'];
+                    break;
+                case 'ELT':
+                    subCategories = ['1', '2', '3', '4'];
+                    break;
+                case 'CTV':
+                    subCategories = ['1', '2', '3', '4', '5'];
+                    break;
+                case 'VDA':
+                    subCategories = ['1', '2', '3', '4'];
+                    break;
+                case 'FIR':
+                    subCategories = ['CO2', 'NOVAC'];
+                    break;
+                case 'WLD':
+                    subCategories = ['1', '2', '3'];
+                    break;
+                case 'PAC':
+                    subCategories = ['PAC1', 'PAC2', 'PAC3'];
+                    break;
+                case 'ACS':
+                    subCategories = ['1', '2', '3'];
+                    break;
+                default:
+                    break;
+            }
+
+            // Populate sub-category select options
+            subCategories.forEach(function(subCategory) {
+                var option = document.createElement('option');
+                option.value = subCategory;
+                option.textContent = subCategory;
+                subCategorySelect.appendChild(option);
+            });
+
+            // Display the sub-category group if sub-categories exist
+            var subCategoryGroup = document.getElementById('subCategoryGroup');
+            if (subCategories.length > 0) {
+                subCategoryGroup.style.display = 'block';
+            } else {
+                subCategoryGroup.style.display = 'none';
+            }
+        }
+
+        document.getElementById('activityForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var form = event.target;
+            var formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Form saved successfully!');
+                window.location.reload(); // Reload the page after successful submission
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving form!');
+            });
+        });
+    </script>
+</body>
+</html>

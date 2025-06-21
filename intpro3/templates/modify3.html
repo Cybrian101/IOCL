@@ -1,0 +1,101 @@
+<!-- modify2.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 1000%%;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Modify Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Current Date</th>
+                    <th>Down Date</th>
+                    <th>Down Time</th>
+                    <th>Main Category</th>
+                    <th>Sub Category</th>                    
+                    <th>Ticket ID</th>
+                    <th>Update</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row.serial_number }}</td>
+                    <td>{{ row.current_date }}</td>
+                    <td>{{row.down_date}}</td>
+                    <td>{{ row.down_time }}</td>
+                    <td>{{ row.main_category }}</td>
+                    <td>{{row.sub_category}}</td>
+                    <td>{{ row.ticket_id }}</td>
+                    <td>
+                        <form action="/modifyform/{{ row.serial_number }}" method="GET">
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

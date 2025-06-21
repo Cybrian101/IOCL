@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Details</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin: 0;
+    }
+    
+    .container {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+    }
+    
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 3px solid #ddd;
+        
+    }
+    
+    th {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    tr:hover {
+        background-color: #f2f2f2;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+    }
+    
+    /* loginnnnnnnnn page bruhhh */
+    
+    body {
+        background: #e6ffff;
+        font-family: 'Montserrat', sans-serif;
+        min-height: 500%;
+        margin: 1%;
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    
+    button {
+        color: rgb(245, 248, 250);
+        background: #4dc3ff;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 12px 30px;
+        border-radius: 20px;
+        border: 1px solid #004466;
+        outline: none;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #0099e6;
+    }
+    
+    .container {
+        position: block;
+        width: 100%;
+        max-width: 500%;
+        background: #eae9e9;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+                    0 10px 10px rgba(0,0,0,0.22);
+        display: block;
+    }
+    
+    /* Input field  */
+    .filter-input {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Year and Month filter */
+    .filter-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    select {
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 200px;
+    }
+
+    /* Updated styles for filter buttons */
+    .filter-input {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 110%;
+        box-sizing: border-box;
+    }
+
+    /* Style for filter buttons */
+    .filter-input button {
+        color: #fff;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-input button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Additional hover effect for select elements */
+    select:hover {
+        border-color: #0056b3;
+    }
+    .cancelled-row {
+        opacity: 0.5; /* Reduced opacity to indicate cancellation */
+        background-color: #f2f2f2; /* Light grey background */
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Submission Details</h2>
+        <div class="button-container">
+            <button onclick="exportToCSV()">Export to CSV</button>
+            <div class="button-container">
+                <button id="exportAllButton">Export All Submissions</button>
+                <button id="exportActiveButton">Export Active Submissions</button>
+            </div>
+            <button onclick="redirectToLoginPage()">Back to Login Page</button>
+            
+            
+        </div>
+        <div class="filter-container">
+            <input type="date" id="startDateFilter" class="filter-input">
+            <input type="date" id="endDateFilter" class="filter-input">
+            <button onclick="filterDataByDateRange()">Filter</button>
+        </div>
+
+        <table id="submissionTable">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>S.No</th>
+                    <th>Current Date</th>
+                    <th>Down Date</th>
+                    <th>Down Time</th>
+                    <th>Main Category</th>
+                    <th>Sub Category</th>
+                    <th>Ticket ID</th>
+                    <th>Remarks</th>
+                    <th>Modified Engineer Name</th>
+                    <th>Up Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for row in rows %}
+                <tr id="row{{ row.serial_number }}" {% if row.status == 'Cancelled' %} class="cancelled-row" {% endif %}>
+                    <td>{{ row.user_id }}</td>
+                    <td>{{ row.serial_number }}</td>
+                    <td>{{ row.current_date }}</td>
+                    <td>{{row.down_date}}</td>
+                    <td>{{ row.down_time }}</td>
+                    <td>{{ row.main_category }}</td>
+                    <td>{{ row.sub_category }}</td>
+                    <td>{{ row.ticket_id }}</td>
+                    <td>{{ row.remarks }}</td>
+                    <td>{{ row.modify_engineer_name }}</td>
+                    <td>{{ row.up_time }}</td>
+                    <td>
+                        {% if row.status != 'Cancelled' %}
+                        <button onclick="cancelRow({{ row.serial_number }})">Cancel</button>
+                        {% else %}
+                        <button disabled>Cancelled</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
+        
+            // CSV file
+            csvFile = new Blob([csv], { type: "text/csv" });
+        
+            // Download link
+            downloadLink = document.createElement("a");
+        
+            // File name
+            downloadLink.download = filename;
+        
+            // Create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+        
+            // Hide download link
+            downloadLink.style.display = "none";
+        
+            // Add the link to DOM
+            document.body.appendChild(downloadLink);
+        
+            // Click download link
+            downloadLink.click();
+        }
+        
+        function exportToCSV(includeCancelled) {
+            var visibleRows = document.querySelectorAll("#submissionTable tbody tr:not([style='display: none;'])");
+        
+            // Prepare CSV data
+            var csv = [];
+            var headerRow = [];
+            var headers = document.querySelectorAll("#submissionTable th");
+            for (var h = 0; h < headers.length; h++) {
+                headerRow.push(headers[h].innerText);
+            }
+            csv.push(headerRow.join(","));
+        
+            for (var i = 0; i < visibleRows.length; i++) {
+                var row = [], cols = visibleRows[i].querySelectorAll("td");
+                for (var j = 0; j < cols.length; j++) {
+                    row.push(cols[j].innerText);
+                }
+        
+                // Include row if not cancelled or if includeCancelled is true
+                if (!visibleRows[i].classList.contains('cancelled-row') || includeCancelled) {
+                    csv.push(row.join(","));
+                }
+            }
+        
+            // Determine filename
+            var currentDate = new Date();
+            var filename;
+            if (includeCancelled) {
+                filename = 'All_Submissions_' + currentDate.toISOString().slice(0, 10) + '.csv';
+            } else {
+                filename = 'Active_Submissions_' + currentDate.toISOString().slice(0, 10) + '.csv';
+            }
+        
+            // Download CSV
+            downloadCSV(csv.join("\n"), filename);
+        }
+        
+        // Button click handlers
+        document.getElementById('exportAllButton').addEventListener('click', function() {
+            exportToCSV(true); // Export CSV with all rows
+        });
+        
+        document.getElementById('exportActiveButton').addEventListener('click', function() {
+            exportToCSV(false); // Export CSV with active rows only
+        });
+
+        function cancelRow(serialNumber) {
+            if (confirm("Are you sure you want to cancel this entry?")) {
+                var row = document.getElementById('row' + serialNumber);
+                row.classList.add('cancelled-row'); // Add class for cancelled row styling
+
+                // Disable cancel button
+                var cancelButton = row.querySelector('button');
+                cancelButton.disabled = true;
+
+                // Make AJAX call to cancel entry on server
+                fetch('/cancel/' + serialNumber, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ serial_number: serialNumber })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Entry cancelled successfully');
+                    } else {
+                        console.error('Failed to cancel entry');
+                    }
+                }).catch(error => {
+                    console.error('Error cancelling entry:', error);
+                });
+            }
+        }
+
+        function redirectToLoginPage() {
+            window.location.href = '/';
+        }
+
+        function filterDataByDateRange() {
+            var startDate = document.getElementById('startDateFilter').value;
+            var endDate = document.getElementById('endDateFilter').value;
+            var table = document.getElementById('submissionTable');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var cellDate = row.cells[2].textContent.trim(); // Assuming current_date is in the third column (index 2)
+                if (cellDate < startDate || cellDate > endDate) {
+                    row.style.display = 'none';
+                } else {
+                    row.style.display = '';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

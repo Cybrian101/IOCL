@@ -1,0 +1,102 @@
+<!-- modify_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .form-group button.modify {
+            background-color: #007bff;
+        }
+        .form-group button.modify:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Modify Details</h2>
+        <form id="modifyform" method="POST" action="/save_modifications">
+            <input type="hidden" id="serialNumber" name="serialNumber" value="{{ row.serial_number }}">
+            <div class="form-group">
+                <label for="modifyEngineerName">Engineer Name</label>
+                <select id="modifyEngineerName" name="modifyEngineerName" required>
+                    <option value="User1" {% if row.engineer_name == 'User1' %} selected {% endif %}>User1</option>
+                    <option value="User2" {% if row.engineer_name == 'User2' %} selected {% endif %}>User2</option>
+                    <option value="User3" {% if row.engineer_name == 'User3' %} selected {% endif %}>User3</option>
+                    <option value="User4" {% if row.engineer_name == 'User4' %} selected {% endif %}>User4</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="upTime">Up Time</label>
+                <input type="time" id="upTime" name="upTime" value="{{ row.up_time }}" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Save Modifications</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('modifyform').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var form = event.target;
+            var formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Modifications saved successfully!');
+                // Optionally redirect or perform other actions after saving
+                window.location.href = '/'; // Example redirect
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving modifications!');
+            });
+        });
+    </script>
+</body>
+</html>
